@@ -1,7 +1,6 @@
 package com.example.my_plant;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,15 +23,21 @@ import com.example.bluetooth.BluetoothSPP;
 import com.example.bluetooth.BluetoothState;
 
 import com.example.my_plant.fragments.FragmentAdd;
+import com.example.my_plant.fragments.FragmentMain;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @SuppressLint("StaticFieldLeak")
-    public static BluetoothSPP bt;
-    public static String address= "98:D3:31:FB:54:46";
+    //public static BluetoothSPP bt;
+    //public static String address = "98:D3:31:FB:54:46";
 
-    FragmentAdd fadd;
+    FragmentAdd fragmentAdd;
+    FragmentMain fragmentMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+/*
         bt = new BluetoothSPP(this);
 
         if (!bt.isBluetoothAvailable()) {
@@ -68,17 +73,23 @@ public class MainActivity extends AppCompatActivity
                     , Toast.LENGTH_SHORT).show();
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, 1);
-            //finish();
         }
 
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
             public void onDataReceived(byte[] data, String message) {
                 Log.i("Check", "Message : " + message);
+                analyzeIncomeMsg(message);
             }
-        });
+        });*/
 
-        fadd = new FragmentAdd();
+        fragmentAdd = new FragmentAdd();
+        fragmentMain = new FragmentMain();
 
+       // navigationView = findViewById(R.id.nav_main);
+       //
+        // navigationView.getMenu().getItem(0).setChecked(true);
+
+        PersistentStorage.init(this);
     }
 
     @Override
@@ -121,20 +132,25 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction ftrans = getSupportFragmentManager().beginTransaction();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_main) {
+            ftrans.replace(R.id.container, fragmentMain);
+        } else if (id == R.id.nav_statistics) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_recommend_params) {
 
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_add) {
-            ftrans.replace(R.id.container, fadd);
+            ftrans.replace(R.id.container, fragmentAdd);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_choose) {
+
+        } else if (id == R.id.nav_create_params) {
 
         }ftrans.commit();
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
     }
@@ -142,9 +158,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDestroy() {
         super.onDestroy();
-        bt.stopService();
+        //bt.stopService();
     }
-
+/*
     @Override
     public void onStart() {
         super.onStart();
@@ -164,7 +180,6 @@ public class MainActivity extends AppCompatActivity
         bt.stopService();
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -172,8 +187,9 @@ public class MainActivity extends AppCompatActivity
             try {
                 if (!address.equals(""))
                     bt.connect(address);
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
         }
-    }
+    }*/
 
 }

@@ -9,5 +9,24 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_plant">Добавить растение</string>
+    <string name="nav_add">Добавить растение</string>
+    <string name="nav_main">Главная</string>
+    <string name="nav_statistics">Статистика</string>
+    <string name="nav_recommend_params">Рекомендуемые</string>
+    <string name="nav_manage">Настройки</string>
+    <string name="nav_field">Общие</string>
+    <string name="nav_choose">Выбрать растение</string>
+    <string name="nav_create_params">Создать свои параметры</string>
+
+    <string name="empty_data"></string>
+    <string name="txt_humidity">Влажность воздуха</string>
+    <string name="value_humidity">%1$d %2$s</string>
+    <string name="txt_temperature">Температура</string>
+    <string name="value_temperature">%1$d \u2103</string>
+    <string name="txt_light">Освещеннось</string>
+    <string name="value_light">%1$d %2$s</string>
+    <string name="last_refresh_time">Время последнего обновления:</string>
+    <string name="last_water_time">Время последнего полива:</string>
+    <string name="refresh_button">Обновить</string>
+
 </resources>

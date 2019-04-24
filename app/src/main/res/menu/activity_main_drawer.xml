@@ -5,33 +5,38 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Главная" />
+            android:id="@+id/nav_main"
+            android:icon="@drawable/baseline_home_black_18"
+            android:title="@string/nav_main" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Статистика" />
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/baseline_equalizer_black_18"
+            android:title="@string/nav_statistics" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Доп" />
+            android:id="@+id/nav_recommend_params"
+            android:icon="@drawable/baseline_stars_black_18"
+            android:title="@string/nav_recommend_params" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Настройки" />
+            android:title="@string/nav_manage" />
     </group>
 
-    <item android:title="Общие">
+    <item android:title="@string/nav_field">
         <menu>
             <item
                 android:id="@+id/nav_add"
                 android:icon="@drawable/ic_add_plant"
-                android:title="@string/add_plant" />
+                android:title="@string/nav_add" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Выбрать растение" />
+                android:id="@+id/nav_choose"
+                android:icon="@drawable/baseline_list_black_18"
+                android:title="@string/nav_choose" />
+            <item
+                android:id="@+id/nav_create_params"
+                android:icon="@drawable/baseline_create_black_18"
+                android:title="@string/nav_create_params" />
+
         </menu>
     </item>
 

@@ -1,11 +1,15 @@
 package com.example.my_plant.fragments;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bluetooth.BluetoothSPP;
 import com.example.bluetooth.BluetoothState;
 import com.example.bluetooth.DeviceList;
 import com.example.my_plant.MainActivity;
@@ -24,6 +29,11 @@ import com.example.my_plant.R;
 
 public class FragmentAdd extends Fragment {
 
+    protected FragmentActivity mActivity;
+
+    private BluetoothSPP bt;
+
+    //TODO чтение из БД
     String[] plantType = {"алое", "кактус", "гладиолус"};
     TextView dummyTextView;
 
@@ -38,20 +48,34 @@ public class FragmentAdd extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_add, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        dummyTextView = getView().findViewById(R.id.device);
+        View v = getView();
+        assert v != null;
+
+        dummyTextView = v.findViewById(R.id.device);
         dummyTextView.setText("");
 
-        Button btnConnect = getView().findViewById(R.id.btnConnect);
+        bt = new BluetoothSPP(mActivity);
+
+        if (!bt.isBluetoothAvailable()) {
+            Toast.makeText(getActivity().getApplicationContext()
+                    , "Попробуй обновить соединение"
+                    , Toast.LENGTH_SHORT).show();
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, 1);
+        }
+
+        Button btnConnect = v.findViewById(R.id.btnConnect);
         btnConnect.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (((MainActivity) getActivity()).bt.getServiceState() == BluetoothState.STATE_CONNECTED) {
-                    ((MainActivity) getActivity()).bt.disconnect();
+                if (bt.getServiceState() == BluetoothState.STATE_CONNECTED) {
+                    bt.disconnect();
                 }
                 Intent intent = new Intent(getActivity().getApplicationContext(), DeviceList.class);
                 startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
@@ -59,8 +83,8 @@ public class FragmentAdd extends Fragment {
             }
         });
 
-        Button btnContinue = getView().findViewById(R.id.btnContinue);
-        btnConnect.setOnClickListener(new View.OnClickListener() {
+        Button btnContinue = v.findViewById(R.id.btnContinue);
+        btnContinue.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // TODO создаем запись в бд
 
@@ -73,7 +97,7 @@ public class FragmentAdd extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, plantType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner spinner = getView().findViewById(R.id.spinnerType);
+        Spinner spinner = v.findViewById(R.id.spinnerType);
         spinner.setAdapter(adapter);
         spinner.setPrompt("Название");
 
@@ -92,22 +116,31 @@ public class FragmentAdd extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof AppCompatActivity){
+            mActivity =(AppCompatActivity) context;
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        dummyTextView.setText("2");
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
             if (resultCode == Activity.RESULT_OK) {
-                ((MainActivity) getActivity()).bt.connect(data);
+                bt.connect(data);
 
                 String address = data.getExtras().getString(BluetoothState.DEVICE_ADDRESS);
 
-                ((MainActivity) getActivity()).address = address;
+                //TODO записать адрес в preferanses и БД
+                //((MainActivity) getActivity()).address = address;
                 dummyTextView.setText(address);
 
             }
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i("CONNECTION", "MAKE REQUEST AUTO CONNECT");
-                ((MainActivity) getActivity()).bt.setupService();
+                bt.setupService();
             } else {
                 Toast.makeText(getActivity().getApplicationContext()
                         , "Bluetooth was not enabled."

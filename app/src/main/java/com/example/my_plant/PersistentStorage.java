@@ -14,6 +14,10 @@ public class PersistentStorage {
     public static final String UPDATE_TIME_KEY = "lastUpdateTime";
     public static final String WATER_TIME_KEY = "lastWaterTime";
 
+    //settings
+    public static final String MAX_REQ_NUM = "maxReqNum";
+    public static final String PERIOD_OF_RECORDs = "periodOfRecords";
+
     private static SharedPreferences settings = null;
     private static SharedPreferences.Editor editor = null;
     private static Context context = null;
@@ -27,7 +31,7 @@ public class PersistentStorage {
         editor = settings.edit();
     }
 
-    public static void addProperty( String name, String value ){
+    public static void addStrProperty( String name, String value ){
         if( settings == null ){
             init();
         }
@@ -36,11 +40,43 @@ public class PersistentStorage {
 
     }
 
-    public static String getProperty ( String name ){
+    public static void addIntProperty( String name, int value ){
+        if( settings == null ){
+            init();
+        }
+        editor.putInt(name, value);
+        editor.apply();
+
+    }
+
+    public static void addLongProperty( String name, Long value ){
+        if( settings == null ){
+            init();
+        }
+        editor.putLong(name, value);
+        editor.apply();
+
+    }
+
+    public static String getStrProperty ( String name ){
         if( settings == null ){
             init();
         }
         return settings.getString( name, "" );
+    }
+
+    public static int getIntProperty ( String name ){
+        if( settings == null ){
+            init();
+        }
+        return settings.getInt(name, 0);
+    }
+
+    public static Long getLongProperty ( String name ){
+        if( settings == null ){
+            init();
+        }
+        return settings.getLong( name, 0 );
     }
 
 }

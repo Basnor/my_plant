@@ -9,14 +9,14 @@ import java.util.Date;
 class ParamsStruct {
     private static final String TAG = "INPUT PARAMS";
 
-    String humidity;
-    String temperature;
-    String light;
-    String flgMoist;
+    int humidity;
+    int temperature;
+    int light;
+    boolean flgMoist;
 
     // constructor
-    ParamsStruct(String humidity, String temperature, String light,
-                 String flgMoist) {
+    ParamsStruct(int humidity, int temperature, int light,
+                 boolean flgMoist) {
 
         this.humidity = humidity;
         this.temperature = temperature;
