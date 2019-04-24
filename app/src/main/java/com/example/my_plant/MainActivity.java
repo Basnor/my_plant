@@ -1,13 +1,11 @@
 package com.example.my_plant;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,24 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.example.bluetooth.BluetoothSPP;
-import com.example.bluetooth.BluetoothState;
 
 import com.example.my_plant.fragments.FragmentAdd;
 import com.example.my_plant.fragments.FragmentMain;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @SuppressLint("StaticFieldLeak")
-    //public static BluetoothSPP bt;
-    //public static String address = "98:D3:31:FB:54:46";
 
     FragmentAdd fragmentAdd;
     FragmentMain fragmentMain;
@@ -63,24 +52,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-/*
-        bt = new BluetoothSPP(this);
-
-        if (!bt.isBluetoothAvailable()) {
-            Toast.makeText(getApplicationContext()
-                    , "Попробуй обновить соединение"
-                    , Toast.LENGTH_SHORT).show();
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, 1);
-        }
-
-        bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
-            public void onDataReceived(byte[] data, String message) {
-                Log.i("Check", "Message : " + message);
-                analyzeIncomeMsg(message);
-            }
-        });*/
 
         fragmentAdd = new FragmentAdd();
         fragmentMain = new FragmentMain();
@@ -126,7 +97,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -158,38 +129,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //bt.stopService();
     }
-/*
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (!bt.isBluetoothEnabled()) {
-            bt.enable();
-        } else {
-            if (!bt.isServiceAvailable()) {
-                bt.setupService();
-                bt.startService(BluetoothState.DEVICE_OTHER);
-            }
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        bt.stopService();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (bt.getServiceState() != BluetoothState.STATE_CONNECTED) {
-            try {
-                if (!address.equals(""))
-                    bt.connect(address);
-            } catch (Exception ignored) {
-            }
-        }
-    }*/
 
 }

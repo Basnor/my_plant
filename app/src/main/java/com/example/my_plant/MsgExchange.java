@@ -1,6 +1,5 @@
 package com.example.my_plant;
 
-import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -8,11 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 public class MsgExchange {
-    private static final int REQ_END = -3;
-    private static final int REQ_BURN = -2;
-    private static final int REQ_INIT = -1;
-
-    private Context context;
+    public static final int REQ_END = -3;
+    public static final int REQ_BURN = -2;
+    public static final int REQ_INIT = -1;
 
     private List<ParamsStruct> paramsList = new ArrayList<>();
 
@@ -39,8 +36,7 @@ public class MsgExchange {
         mAnswerStateListener = listener;
     }
 
-    public MsgExchange(Context context) {
-        this.context = context;
+    public MsgExchange() {
     }
 
     public void sendGraph() {
@@ -60,7 +56,7 @@ public class MsgExchange {
         int maxReqNum = PersistentStorage.getIntProperty(PersistentStorage.MAX_REQ_NUM);
         Log.d("Check", "Max req: " + maxReqNum);
 
-        if (reqNum > maxReqNum) {
+        if (reqNum >= maxReqNum) {
 
             if (mSendStateListener != null)
                 mSendStateListener.setRequest(formMsg(REQ_END));
@@ -126,7 +122,7 @@ public class MsgExchange {
 
     }
 
-    public void putInMemory() {
+    private void putInMemory() {
         /*for (int i = 1; i < MaxReqNum; i++) {
                     fillBD(activity, activity.salad, activity.paramsList.get(i), activity.periodOfRecords, i);
                 }*/
@@ -193,7 +189,7 @@ public class MsgExchange {
         return str;
     }
 
-    public String formMsg(int req) {
+    private String formMsg(int req) {
         String sendingMsg;
 
         switch (req) {

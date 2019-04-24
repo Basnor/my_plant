@@ -23,6 +23,9 @@ import com.example.my_plant.MsgExchange;
 import com.example.my_plant.PersistentStorage;
 import com.example.my_plant.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class FragmentMain extends Fragment {
     protected FragmentActivity mActivity;
 
@@ -46,7 +49,7 @@ public class FragmentMain extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false);
@@ -64,11 +67,22 @@ public class FragmentMain extends Fragment {
         txtLight = v.findViewById(R.id.value_light);
         txtWatering = v.findViewById(R.id.value_last_water_time);
 
+        putParamsValue();
+
         Button btnUpdate = v.findViewById(R.id.btn_init);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                reqNum = -1;
+                reqNum = msgExchange.REQ_INIT;
                 msgExchange.sendGraph();
+            }
+        });
+
+        Button btnBorn = v.findViewById(R.id.btn_born);
+        btnBorn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                reqNum = msgExchange.REQ_BURN;
+                msgExchange.sendGraph();
+                reqNum++;
             }
         });
 
@@ -89,7 +103,7 @@ public class FragmentMain extends Fragment {
             }
         });
 
-        msgExchange = new MsgExchange(mActivity);
+        msgExchange = new MsgExchange();
 
         msgExchange.setSendStateListener(new MsgExchange.sendStateListener() {
             @Override
@@ -114,15 +128,32 @@ public class FragmentMain extends Fragment {
 
             @Override
             public void endExchange() {
-                txtHumidity.setText(String.valueOf(PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY)));
-                txtTemp.setText(String.valueOf(PersistentStorage.getIntProperty(PersistentStorage.TEMPERATURE_KEY)));
-                txtLight.setText(String.valueOf(PersistentStorage.getIntProperty(PersistentStorage.LIGHT_KEY)));
-                //txtUpdateTime.setText(PersistentStorage.getLongProperty(PersistentStorage.UPDATE_TIME_KEY));
-                //txtWatering.setText(PersistentStorage.getLongProperty(PersistentStorage.WATER_TIME_KEY));
+                putParamsValue();
             }
 
         });
 
+    }
+
+    private void putParamsValue() {
+        String formattedStr = getString(R.string.value_humidity,
+                PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY), "%");
+        txtHumidity.setText(formattedStr);
+        formattedStr = getString(R.string.value_temperature,
+                PersistentStorage.getIntProperty(PersistentStorage.TEMPERATURE_KEY));
+        txtTemp.setText(formattedStr);
+        formattedStr = getString(R.string.value_light,
+                PersistentStorage.getIntProperty(PersistentStorage.LIGHT_KEY), "%");
+        txtLight.setText(formattedStr);
+
+        SimpleDateFormat sdf_pattern = new SimpleDateFormat("dd-MM HH:mm");
+
+        Long unixTime = PersistentStorage.getLongProperty(PersistentStorage.UPDATE_TIME_KEY);
+        Date curTime = new Date(unixTime);
+        txtUpdateTime.setText(sdf_pattern.format(curTime));
+
+        //TODO бд нужна
+        //txtWatering.setText(PersistentStorage.getLongProperty(PersistentStorage.WATER_TIME_KEY));
     }
 
     @Override

@@ -183,6 +183,14 @@
                 android:padding="5dp"
                 android:text="@string/refresh_button" />
 
+            <Button
+                android:id="@+id/btn_born"
+                android:layout_width="130dp"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Вкл/выкл " />
+
         </LinearLayout>
 
     </LinearLayout>
