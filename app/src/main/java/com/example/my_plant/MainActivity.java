@@ -51,8 +51,10 @@ public class MainActivity extends AppCompatActivity
         fragmentMain = new FragmentMain();
 
         // Set Homepage Fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMain).commit();
-        navigationView.setCheckedItem(R.id.nav_main);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMain).commit();
+            navigationView.setCheckedItem(R.id.nav_main);
+        }
 
         PersistentStorage.init(this);
     }

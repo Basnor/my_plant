@@ -11,7 +11,7 @@ public class MsgExchange {
     public static final int REQ_BURN = -2;
     public static final int REQ_INIT = -1;
 
-    private List<ParamsStruct> paramsList = new ArrayList<>();
+    private List<InputParamsStruct> paramsList = new ArrayList<>();
 
     // Listener for bt state
     private sendStateListener mSendStateListener = null;
@@ -107,7 +107,7 @@ public class MsgExchange {
                     break;
                 }
 
-                paramsList.add(new ParamsStruct(
+                paramsList.add(new InputParamsStruct(
                         Integer.parseInt(params[0]),          // humidity
                         Integer.parseInt(params[1]),          // temperature
                         Integer.parseInt(params[2]),          // light
@@ -142,7 +142,7 @@ public class MsgExchange {
 
 
 /*
-    void fillParamsBD(Context context, Salad salad, ParamsStruct params,
+    void fillParamsBD(Context context, Salad salad, InputParamsStruct params,
                 long reqPeriod, int reqNum) {
         //порядок данных: hum/temp/light/flgMoist
 

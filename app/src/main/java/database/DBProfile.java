@@ -47,9 +47,10 @@ public class DBProfile {
         mDbHelper.close();
     }
 
-    public Profile createProfile(String name, String address) {
+    public Profile createProfile(String name, long collectionId, String address) {
         ContentValues values = new ContentValues();
         values.put(DBHelper.COLUMN_PROFILE_NAME, name);
+        values.put(DBHelper.COLUMN_PROFILE_TYPE, collectionId);
         values.put(DBHelper.COLUMN_PROFILE_ADDRESS, address);
         long insertId = mDatabase
                 .insert(DBHelper.TABLE_PROFILE, null, values);

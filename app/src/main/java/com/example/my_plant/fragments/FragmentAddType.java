@@ -94,12 +94,12 @@ public class FragmentAddType extends Fragment {
                     return;
                 }
 
-                // add the collection to database
+                // add the mCollection to database
                 Collection createdCollection = mCollectionDB.createCollection(
                         name_collection, humidity_collection,
                         temperature_collection, light_collection, waterPeriod_collection);
 
-                Log.d(TAG, "added collection : "+ createdCollection.getTypeName());
+                Log.d(TAG, "added mCollection : "+ createdCollection.getTypeName());
 
                 Toast.makeText(getActivity().getApplicationContext()
                         , "Создан новый тип растения."

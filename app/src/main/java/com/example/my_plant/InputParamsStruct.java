@@ -6,7 +6,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-class ParamsStruct {
+class InputParamsStruct {
     private static final String TAG = "INPUT PARAMS";
 
     int humidity;
@@ -15,8 +15,8 @@ class ParamsStruct {
     boolean flgMoist;
 
     // constructor
-    ParamsStruct(int humidity, int temperature, int light,
-                 boolean flgMoist) {
+    InputParamsStruct(int humidity, int temperature, int light,
+                      boolean flgMoist) {
 
         this.humidity = humidity;
         this.temperature = temperature;

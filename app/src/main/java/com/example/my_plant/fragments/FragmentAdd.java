@@ -9,12 +9,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,19 +28,26 @@ import com.example.my_plant.R;
 import com.example.my_plant.TypeListActivity;
 
 import database.DBCollection;
+import database.DBProfile;
 import model.Collection;
+import model.Profile;
 
 public class FragmentAdd extends Fragment {
+
+    private static final String TAG = FragmentAdd.class.getSimpleName();
 
     protected FragmentActivity mActivity;
 
     private BluetoothSPP bt;
 
-    TextView txtDevise;
+    private EditText name;
     TextView txtType;
+    Collection mCollection;
+    TextView txtDevise;
+    String address_profile;
 
     private DBCollection mDBCollection;
-    private Collection mSelectedCollection;
+    private DBProfile mDBProfile;
     public static final int REQUEST_CODE_CHOOSE_COLLECTION = 444;
 
     public FragmentAdd() {
@@ -60,10 +70,12 @@ public class FragmentAdd extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         this.mDBCollection = new DBCollection(mActivity);
+        this.mDBProfile = new DBProfile(mActivity);
 
         View v = getView();
         assert v != null;
 
+        name = v.findViewById(R.id.edit_profile_name);
         txtDevise = v.findViewById(R.id.device);
         txtType = v.findViewById(R.id.type);
         txtDevise.setText("");
@@ -99,12 +111,39 @@ public class FragmentAdd extends Fragment {
             }
         });
 
-        Button btnContinue = v.findViewById(R.id.btnAdd);
-        btnContinue.setOnClickListener(new View.OnClickListener() {
+        Button btnAdd = v.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // TODO создаем запись в бд
 
-                // TODO отправляем address, plant_id в SharedPref
+                if (isEmpty(name) || isEmpty(txtType) || isEmpty(txtDevise) || address_profile.isEmpty() || (mCollection == null)) {
+                    Toast.makeText(getActivity().getApplicationContext()
+                            , "Не все поля заполнены."
+                            , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String name_profile = name.getText().toString();
+
+                // add the profile to database
+                Profile createdProfile = mDBProfile.createProfile(name_profile, mCollection.getId(), address_profile);
+
+                Log.d(TAG, "added profile : "+ createdProfile.getName());
+/*
+                Toast.makeText(getApplicationContext()
+                        , "Создан новый тип растения."
+                        , Toast.LENGTH_SHORT).show();*/
+
+                // переключиться на mainFragment
+                FragmentMain fragment = new FragmentMain();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+                // TODO отправляем address_profile, plant_id в SharedPref
+
+                //TODO записать адрес в preferanses и БД
 
             }
         });
@@ -126,6 +165,13 @@ public class FragmentAdd extends Fragment {
         mDBCollection.close();
     }
 
+    private boolean isEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() == 0;
+    }
+
+    private boolean isEmpty(TextView textView) {
+        return textView.getText().length() == 0;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,11 +179,9 @@ public class FragmentAdd extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 bt.connect(data);
 
-                String address = data.getExtras().getString(BluetoothState.DEVICE_ADDRESS);
+                address_profile = data.getExtras().getString(BluetoothState.DEVICE_ADDRESS);
 
-                //TODO записать адрес в preferanses и БД
-                //((MainActivity) getActivity()).address = address;
-                txtDevise.setText(address);
+                txtDevise.setText(address_profile);
 
             }
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
@@ -155,10 +199,9 @@ public class FragmentAdd extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
 
                 long id_collection = data.getExtras().getLong(TypeListActivity.EXTRA_SELECTED_COLLECTION_ID);
-                Collection currentCollection = mDBCollection.getCollectionById(id_collection);
+                mCollection = mDBCollection.getCollectionById(id_collection);
 
-                txtType.setText(currentCollection.getTypeName());
-                //TODO записать адрес в preferanses и БД
+                txtType.setText(mCollection.getTypeName());
 
             }
         }
