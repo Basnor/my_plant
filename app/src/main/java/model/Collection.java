@@ -59,7 +59,7 @@ public class Collection implements Serializable {
     }
     public void setTemperature(int mTemperature) { this.mTemperature = mTemperature; }
 
-    public int getmLight() {
+    public int getLight() {
         return mLight;
     }
     public void setLight(int mLight) {

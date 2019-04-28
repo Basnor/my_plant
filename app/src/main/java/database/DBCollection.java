@@ -49,7 +49,7 @@ public class DBCollection {
         mDbHelper.close();
     }
 
-    public Collection createCompany(String typeName,int humidity, int temperature,
+    public Collection createCollection(String typeName,int humidity, int temperature,
                                     int light, long waterPeriod) {
         ContentValues values = new ContentValues();
         values.put(DBHelper.COLUMN_COLLECTION_NAME, typeName);

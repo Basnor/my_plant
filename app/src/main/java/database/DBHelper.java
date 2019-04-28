@@ -8,7 +8,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // columns of the collection table
     public static final String TABLE_COLLECTION = "collection";
-    public static final String COLUMN_COLLECTION_ID = "_id";
+    public static final String COLUMN_COLLECTION_ID = "_id_collection";
     public static final String COLUMN_COLLECTION_NAME = "type_name";
     public static final String COLUMN_COLLECTION_HUMIDITY = "humidity";
     public static final String COLUMN_COLLECTION_TEMPERATURE = "temperature";
@@ -17,14 +17,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // columns of the profile table
     public static final String TABLE_PROFILE = "profile";
-    public static final String COLUMN_PROFILE_ID = "_id";
+    public static final String COLUMN_PROFILE_ID = "_id_profile";
     public static final String COLUMN_PROFILE_NAME = "name";
     public static final String COLUMN_PROFILE_TYPE = COLUMN_COLLECTION_ID;
     public static final String COLUMN_PROFILE_ADDRESS = "address";
 
     // columns of the params table
     public static final String TABLE_PARAMS = "params";
-    public static final String COLUMN_PARAMS_ID = "_id";
+    public static final String COLUMN_PARAMS_ID = "_id_params";
     public static final String COLUMN_PARAMS_PROFILE = COLUMN_PROFILE_ID;
 
     public static final String COLUMN_PARAMS_DATE = "date";

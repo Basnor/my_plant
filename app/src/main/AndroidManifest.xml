@@ -22,9 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name="com.example.my_plant.AddPlantActivity"
-            android:label="@string/app_name">
+            android:name="com.example.my_plant.AddTypeActivity"
+            android:label="Создание вида">
+
+        </activity>
+        <activity
+            android:name="com.example.my_plant.TypeListActivity"
+            android:label="Виды растений">
 
         </activity>
     </application>

@@ -14,18 +14,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bluetooth.BluetoothSPP;
 import com.example.bluetooth.BluetoothState;
 import com.example.bluetooth.DeviceList;
-import com.example.my_plant.MainActivity;
 import com.example.my_plant.R;
+import com.example.my_plant.TypeListActivity;
+
+import database.DBCollection;
+import model.Collection;
 
 public class FragmentAdd extends Fragment {
 
@@ -33,9 +33,12 @@ public class FragmentAdd extends Fragment {
 
     private BluetoothSPP bt;
 
-    //TODO чтение из БД
-    String[] plantType = {"алое", "кактус", "гладиолус"};
-    TextView dummyTextView;
+    TextView txtDevise;
+    TextView txtType;
+
+    private DBCollection mDBCollection;
+    private Collection mSelectedCollection;
+    public static final int REQUEST_CODE_CHOOSE_COLLECTION = 444;
 
     public FragmentAdd() {
     }
@@ -55,11 +58,15 @@ public class FragmentAdd extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        this.mDBCollection = new DBCollection(mActivity);
+
         View v = getView();
         assert v != null;
 
-        dummyTextView = v.findViewById(R.id.device);
-        dummyTextView.setText("");
+        txtDevise = v.findViewById(R.id.device);
+        txtType = v.findViewById(R.id.type);
+        txtDevise.setText("");
+        txtType.setText("");
 
         bt = new BluetoothSPP(mActivity);
 
@@ -71,8 +78,8 @@ public class FragmentAdd extends Fragment {
             startActivityForResult(enableBtIntent, 1);
         }
 
-        Button btnConnect = v.findViewById(R.id.btnConnect);
-        btnConnect.setOnClickListener(new View.OnClickListener() {
+        Button btnChooseDevise = v.findViewById(R.id.btn_choose_devise);
+        btnChooseDevise.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (bt.getServiceState() == BluetoothState.STATE_CONNECTED) {
                     bt.disconnect();
@@ -83,33 +90,21 @@ public class FragmentAdd extends Fragment {
             }
         });
 
-        Button btnContinue = v.findViewById(R.id.btnContinue);
+        Button btnChooseType = v.findViewById(R.id.btn_choose_type);
+        btnChooseType.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), TypeListActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_CHOOSE_COLLECTION);
+            }
+        });
+
+        Button btnContinue = v.findViewById(R.id.btnAdd);
         btnContinue.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // TODO создаем запись в бд
 
-                // TODO отправляем address в SharedPref
+                // TODO отправляем address, plant_id в SharedPref
 
-            }
-        });
-
-        // адаптер
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, plantType);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        Spinner spinner = v.findViewById(R.id.spinnerType);
-        spinner.setAdapter(adapter);
-        spinner.setPrompt("Название");
-
-        // устанавливаем обработчик нажатия
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
 
@@ -125,6 +120,13 @@ public class FragmentAdd extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDBCollection.close();
+    }
+
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
             if (resultCode == Activity.RESULT_OK) {
@@ -134,7 +136,7 @@ public class FragmentAdd extends Fragment {
 
                 //TODO записать адрес в preferanses и БД
                 //((MainActivity) getActivity()).address = address;
-                dummyTextView.setText(address);
+                txtDevise.setText(address);
 
             }
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
@@ -147,6 +149,19 @@ public class FragmentAdd extends Fragment {
                         , Toast.LENGTH_SHORT).show();
             }
         }
+
+        if (requestCode == REQUEST_CODE_CHOOSE_COLLECTION) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                long id_collection = data.getExtras().getLong(TypeListActivity.EXTRA_SELECTED_COLLECTION_ID);
+                Collection currentCollection = mDBCollection.getCollectionById(id_collection);
+
+                txtType.setText(currentCollection.getTypeName());
+                //TODO записать адрес в preferanses и БД
+
+            }
+        }
+
     }
 
 }
