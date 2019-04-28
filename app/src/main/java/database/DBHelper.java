@@ -7,31 +7,30 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     // columns of the collection table
-    public static final String TABLE_COLLECTION = "collection";
-    public static final String COLUMN_COLLECTION_ID = "_id_collection";
-    public static final String COLUMN_COLLECTION_NAME = "type_name";
-    public static final String COLUMN_COLLECTION_HUMIDITY = "humidity";
-    public static final String COLUMN_COLLECTION_TEMPERATURE = "temperature";
-    public static final String COLUMN_COLLECTION_LIGHT = "light";
-    public static final String COLUMN_COLLECTION_WATER_PERIOD = "water_period";
+    static final String TABLE_COLLECTION = "collection";
+    static final String COLUMN_COLLECTION_ID = "_id_collection";
+    static final String COLUMN_COLLECTION_NAME = "type_name";
+    static final String COLUMN_COLLECTION_HUMIDITY = "humidity";
+    static final String COLUMN_COLLECTION_TEMPERATURE = "temperature";
+    static final String COLUMN_COLLECTION_LIGHT = "light";
+    static final String COLUMN_COLLECTION_WATER_PERIOD = "water_period";
 
     // columns of the profile table
-    public static final String TABLE_PROFILE = "profile";
-    public static final String COLUMN_PROFILE_ID = "_id_profile";
-    public static final String COLUMN_PROFILE_NAME = "name";
-    public static final String COLUMN_PROFILE_TYPE = COLUMN_COLLECTION_ID;
-    public static final String COLUMN_PROFILE_ADDRESS = "address";
+    static final String TABLE_PROFILE = "profile";
+    static final String COLUMN_PROFILE_ID = "_id_profile";
+    static final String COLUMN_PROFILE_NAME = "name";
+    static final String COLUMN_PROFILE_TYPE = COLUMN_COLLECTION_ID;
+    static final String COLUMN_PROFILE_ADDRESS = "address";
 
     // columns of the params table
-    public static final String TABLE_PARAMS = "params";
-    public static final String COLUMN_PARAMS_ID = "_id_params";
-    public static final String COLUMN_PARAMS_PROFILE = COLUMN_PROFILE_ID;
-
-    public static final String COLUMN_PARAMS_DATE = "date";
-    public static final String COLUMN_PARAMS_HUMIDITY = "humidity";
-    public static final String COLUMN_PARAMS_TEMPERATURE = "temperature";
-    public static final String COLUMN_PARAMS_LIGHT = "light";
-    public static final String COLUMN_PARAMS_FLG_MOISTURE = "flg_moisture";
+    static final String TABLE_PARAMS = "params";
+    static final String COLUMN_PARAMS_ID = "_id_params";
+    static final String COLUMN_PARAMS_PROFILE = COLUMN_PROFILE_ID;
+    static final String COLUMN_PARAMS_DATE = "date";
+    static final String COLUMN_PARAMS_HUMIDITY = "humidity";
+    static final String COLUMN_PARAMS_TEMPERATURE = "temperature";
+    static final String COLUMN_PARAMS_LIGHT = "light";
+    static final String COLUMN_PARAMS_FLG_MOISTURE = "flg_moisture";
 
     private static final String DATABASE_NAME = "my_plant.db";
     private static final int DATABASE_VERSION = 1;

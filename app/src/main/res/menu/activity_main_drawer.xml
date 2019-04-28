@@ -22,7 +22,7 @@
             android:title="@string/nav_manage" />
     </group>
 
-    <item android:title="@string/nav_field">
+    <item android:title="@string/nav_field" android:checkableBehavior="single">
         <menu>
             <item
                 android:id="@+id/nav_add"
@@ -32,10 +32,6 @@
                 android:id="@+id/nav_choose"
                 android:icon="@drawable/baseline_list_black_18"
                 android:title="@string/nav_choose" />
-            <item
-                android:id="@+id/nav_create_params"
-                android:icon="@drawable/baseline_create_black_18"
-                android:title="@string/nav_create_params" />
 
         </menu>
     </item>

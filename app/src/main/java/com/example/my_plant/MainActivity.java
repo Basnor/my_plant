@@ -5,8 +5,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +20,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.my_plant.fragments.FragmentAdd;
-import com.example.my_plant.fragments.FragmentAddType;
 import com.example.my_plant.fragments.FragmentMain;
 
 
@@ -33,7 +30,6 @@ public class MainActivity extends AppCompatActivity
 
     FragmentAdd fragmentAdd;
     FragmentMain fragmentMain;
-    FragmentAddType fragmentAddType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +37,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,11 +49,10 @@ public class MainActivity extends AppCompatActivity
 
         fragmentAdd = new FragmentAdd();
         fragmentMain = new FragmentMain();
-        fragmentAddType = new FragmentAddType();
 
-       // navigationView = findViewById(R.id.nav_main);
-       //
-        // navigationView.getMenu().getItem(0).setChecked(true);
+        // Set Homepage Fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMain).commit();
+        navigationView.setCheckedItem(R.id.nav_main);
 
         PersistentStorage.init(this);
     }
@@ -86,21 +72,6 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -124,10 +95,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_choose) {
 
-        } else if (id == R.id.nav_create_params) {
-            ftrans.replace(R.id.container, fragmentAddType);
-
-        }ftrans.commit();
+        }
+        ftrans.commit();
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);

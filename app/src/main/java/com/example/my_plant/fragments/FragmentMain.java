@@ -11,6 +11,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -40,11 +43,11 @@ public class FragmentMain extends Fragment {
         // Required empty public constructor
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        mActivity.setTitle("Главная");
 
     }
 
@@ -76,7 +79,7 @@ public class FragmentMain extends Fragment {
                 msgExchange.sendGraph();
             }
         });
-
+/*
         Button btnBorn = v.findViewById(R.id.btn_born);
         btnBorn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -84,7 +87,7 @@ public class FragmentMain extends Fragment {
                 msgExchange.sendGraph();
                 reqNum++;
             }
-        });
+        });*/
 
         bt = new BluetoothSPP(mActivity);
 
@@ -206,6 +209,25 @@ public class FragmentMain extends Fragment {
             } catch (Exception ignored) {
             }
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.on_off_led, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_led:
+                reqNum = msgExchange.REQ_BURN;
+                msgExchange.sendGraph();
+                reqNum++;
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

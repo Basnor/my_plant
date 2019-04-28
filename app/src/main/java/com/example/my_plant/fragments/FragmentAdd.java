@@ -46,6 +46,7 @@ public class FragmentAdd extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivity.setTitle("Добавить растение");
     }
 
     @Override
