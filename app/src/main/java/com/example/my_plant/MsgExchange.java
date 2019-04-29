@@ -61,7 +61,9 @@ public class MsgExchange {
             if (mSendStateListener != null)
                 mSendStateListener.setRequest(formMsg(REQ_END));
 
-            putInMemory();
+            if (maxReqNum != 0) {
+                putInMemory();
+            }
 
             if (mAnswerStateListener != null)
                 mAnswerStateListener.endExchange();
@@ -71,9 +73,8 @@ public class MsgExchange {
 
         switch (reqNum) {
             case REQ_INIT: {
-                Log.d("Check", "Input str: " + incomeStr);
                 String paramsFromSlash = validateStr(incomeStr);
-                Log.d("Check", "Validate str: " + paramsFromSlash);
+
                 if (paramsFromSlash == null) {
                     break;
                 }
@@ -85,8 +86,6 @@ public class MsgExchange {
 
                 //periodOfRecords = Long.parseLong(params[2]);
                 //MaxReqNum = Integer.parseInt(params[0]);
-
-                Log.d("Check", "Max req: " + params[0]);
 
                 mSendStateListener.increaseReqNum();
 
@@ -136,7 +135,6 @@ public class MsgExchange {
         PersistentStorage.addIntProperty(PersistentStorage.HUMIDITY_KEY, paramsList.get(0).humidity);
         PersistentStorage.addIntProperty(PersistentStorage.TEMPERATURE_KEY, paramsList.get(0).temperature);
         PersistentStorage.addIntProperty(PersistentStorage.LIGHT_KEY, paramsList.get(0).light);
-
         paramsList.clear();
     }
 

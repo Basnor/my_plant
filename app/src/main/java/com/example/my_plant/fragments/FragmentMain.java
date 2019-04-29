@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,10 @@ import com.example.my_plant.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import database.DBProfile;
+import model.Profile;
 
 public class FragmentMain extends Fragment {
     protected FragmentActivity mActivity;
@@ -38,6 +43,8 @@ public class FragmentMain extends Fragment {
     int reqNum = -1;
 
     TextView txtHumidity, txtTemp, txtUpdateTime, txtLight, txtWatering;
+    private TextView mTxtEmptyListProfile;
+    private LinearLayout mLinearLayout;
 
     public FragmentMain() {
         // Required empty public constructor
@@ -60,34 +67,27 @@ public class FragmentMain extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        initViews();
 
-        View v = getView();
-        assert v != null;
+        DBProfile mDBProfile = new DBProfile(mActivity);
+        List<Profile> mListProfile = mDBProfile.getAllProfile();
 
-        txtHumidity = v.findViewById(R.id.value_humidity);
-        txtTemp = v.findViewById(R.id.value_temperature);
-        txtUpdateTime = v.findViewById(R.id.value_last_refresh_time);
-        txtLight = v.findViewById(R.id.value_light);
-        txtWatering = v.findViewById(R.id.value_last_water_time);
+        if (mListProfile != null && !mListProfile.isEmpty()) {
+
+        } else {
+            mTxtEmptyListProfile.setVisibility(View.VISIBLE);
+            mLinearLayout.setVisibility(View.GONE);
+        }
 
         putParamsValue();
 
-        Button btnUpdate = v.findViewById(R.id.btn_init);
+        Button btnUpdate = getView().findViewById(R.id.btn_init);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 reqNum = msgExchange.REQ_INIT;
                 msgExchange.sendGraph();
             }
         });
-/*
-        Button btnBorn = v.findViewById(R.id.btn_born);
-        btnBorn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                reqNum = msgExchange.REQ_BURN;
-                msgExchange.sendGraph();
-                reqNum++;
-            }
-        });*/
 
         bt = new BluetoothSPP(mActivity);
 
@@ -138,6 +138,20 @@ public class FragmentMain extends Fragment {
 
     }
 
+    private void initViews() {
+        View v = getView();
+        assert v != null;
+
+        txtHumidity = v.findViewById(R.id.value_humidity);
+        txtTemp = v.findViewById(R.id.value_temperature);
+        txtUpdateTime = v.findViewById(R.id.value_last_refresh_time);
+        txtLight = v.findViewById(R.id.value_light);
+        txtWatering = v.findViewById(R.id.value_last_water_time);
+        mTxtEmptyListProfile = v.findViewById(R.id.txt_empty_main);
+        mLinearLayout = v.findViewById(R.id.txt_main);
+
+    }
+
     private void putParamsValue() {
         String formattedStr = getString(R.string.value_humidity,
                 PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY), "%");
@@ -163,8 +177,8 @@ public class FragmentMain extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof AppCompatActivity){
-            mActivity =(AppCompatActivity) context;
+        if (context instanceof AppCompatActivity) {
+            mActivity = (AppCompatActivity) context;
         }
     }
 

@@ -21,6 +21,7 @@ import android.widget.EditText;
 
 import com.example.my_plant.fragments.FragmentAdd;
 import com.example.my_plant.fragments.FragmentMain;
+import com.example.my_plant.fragments.FragmentProfileList;
 
 
 public class MainActivity extends AppCompatActivity
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity
 
     FragmentAdd fragmentAdd;
     FragmentMain fragmentMain;
+    FragmentProfileList fragmentProfileList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
         fragmentAdd = new FragmentAdd();
         fragmentMain = new FragmentMain();
+        fragmentProfileList = new FragmentProfileList();
 
         // Set Homepage Fragment
         if (savedInstanceState == null) {
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity
             ftrans.replace(R.id.container, fragmentAdd);
 
         } else if (id == R.id.nav_choose) {
-
+            ftrans.replace(R.id.container, fragmentProfileList);
         }
         ftrans.commit();
 

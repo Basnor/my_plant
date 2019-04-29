@@ -22,7 +22,7 @@
             android:title="@string/nav_manage" />
     </group>
 
-    <item android:title="@string/nav_field" android:checkableBehavior="single">
+    <item android:title="@string/nav_field">
         <menu>
             <item
                 android:id="@+id/nav_add"

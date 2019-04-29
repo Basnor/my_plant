@@ -5,7 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".fragments.FragmentMain">
 
+    <TextView
+        android:id="@+id/txt_empty_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:text="Нет ни одного растения. Для создания нового профиля растения заполниете форму пункта меню \u00ABДобавить растение\u00BB."
+        android:textColor="@android:color/darker_gray"
+        android:visibility="gone" />
+
     <LinearLayout
+        android:id="@+id/txt_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">

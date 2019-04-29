@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:layout_margin="10dp" >
+    android:layout_margin="10dp"
+    android:orientation="horizontal">
 
     <GridLayout
         android:layout_width="0dp"
@@ -21,8 +21,9 @@
             android:layout_column="0"
             android:layout_columnSpan="4"
             android:layout_margin="5dp"
-            android:textSize="16sp"
             android:text="Название"
+            android:textColor="@color/colorMainText"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -43,8 +44,9 @@
                 android:id="@+id/txt_collection_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="New Text" />
+                android:text="New Text"
+                android:textColor="@color/colorMainText"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -66,8 +68,9 @@
                 android:id="@+id/txt_collection_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="New Text" />
+                android:text="New Text"
+                android:textColor="@color/colorMainText"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -89,8 +92,9 @@
                 android:id="@+id/txt_collection_humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="New Text" />
+                android:text="New Text"
+                android:textColor="@color/colorMainText"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -112,8 +116,9 @@
                 android:id="@+id/txt_collection_frequency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="New Text" />
+                android:text="New Text"
+                android:textColor="@color/colorMainText"
+                android:textSize="14sp" />
 
         </LinearLayout>
 

@@ -31,7 +31,7 @@ public class PersistentStorage {
         editor = settings.edit();
     }
 
-    public static void addStrProperty( String name, String value ){
+    public static void addStringProperty( String name, String value ){
         if( settings == null ){
             init();
         }
@@ -49,7 +49,7 @@ public class PersistentStorage {
 
     }
 
-    public static void addLongProperty( String name, Long value ){
+    public static void addLongProperty( String name, long value ){
         if( settings == null ){
             init();
         }
@@ -69,10 +69,10 @@ public class PersistentStorage {
         if( settings == null ){
             init();
         }
-        return settings.getInt(name, 0);
+        return settings.getInt( name, 0 );
     }
 
-    public static Long getLongProperty ( String name ){
+    public static long getLongProperty ( String name ){
         if( settings == null ){
             init();
         }

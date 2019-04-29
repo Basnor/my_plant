@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.bluetooth.BluetoothSPP;
 import com.example.bluetooth.BluetoothState;
 import com.example.bluetooth.DeviceList;
+import com.example.my_plant.PersistentStorage;
 import com.example.my_plant.R;
 import com.example.my_plant.TypeListActivity;
 
@@ -126,8 +127,17 @@ public class FragmentAdd extends Fragment {
 
                 // add the profile to database
                 Profile createdProfile = mDBProfile.createProfile(name_profile, mCollection.getId(), address_profile);
-
                 Log.d(TAG, "added profile : "+ createdProfile.getName());
+
+                // fill PersistentStorage to get new fields/params of mainFragment
+                PersistentStorage.addStringProperty(PersistentStorage.ADDRESS_KEY, createdProfile.getAddress());
+                PersistentStorage.addStringProperty(PersistentStorage.NAME_KEY, createdProfile.getName());
+                PersistentStorage.addLongProperty(PersistentStorage.UPDATE_TIME_KEY, (long) 0);
+                PersistentStorage.addLongProperty(PersistentStorage.WATER_TIME_KEY, (long) 0);
+                PersistentStorage.addIntProperty(PersistentStorage.HUMIDITY_KEY, 0);
+                PersistentStorage.addIntProperty(PersistentStorage.TEMPERATURE_KEY, 0);
+                PersistentStorage.addIntProperty(PersistentStorage.LIGHT_KEY, 0);
+
 /*
                 Toast.makeText(getApplicationContext()
                         , "Создан новый тип растения."
@@ -141,10 +151,6 @@ public class FragmentAdd extends Fragment {
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                // TODO отправляем address_profile, plant_id в SharedPref
-
-                //TODO записать адрес в preferanses и БД
-
             }
         });
 
@@ -156,6 +162,19 @@ public class FragmentAdd extends Fragment {
 
         if (context instanceof AppCompatActivity){
             mActivity =(AppCompatActivity) context;
+        }
+    }
+
+    public void onStart() {
+        super.onStart();
+        if (!bt.isBluetoothEnabled()) {
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
+        } else {
+            if(!bt.isServiceAvailable()) {
+                bt.setupService();
+                bt.startService(BluetoothState.DEVICE_OTHER);
+            }
         }
     }
 
@@ -177,7 +196,14 @@ public class FragmentAdd extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
             if (resultCode == Activity.RESULT_OK) {
-                bt.connect(data);
+                try {
+                    bt.connect(data);
+                }catch (Exception e) {
+                    Toast.makeText(getActivity().getApplicationContext()
+                            , "Connection failed."
+                            , Toast.LENGTH_SHORT).show();
+                }
+
 
                 address_profile = data.getExtras().getString(BluetoothState.DEVICE_ADDRESS);
 
@@ -187,7 +213,9 @@ public class FragmentAdd extends Fragment {
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i("CONNECTION", "MAKE REQUEST AUTO CONNECT");
+
                 bt.setupService();
+
             } else {
                 Toast.makeText(getActivity().getApplicationContext()
                         , "Bluetooth was not enabled."

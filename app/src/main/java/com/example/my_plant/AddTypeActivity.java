@@ -2,6 +2,7 @@ package com.example.my_plant;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -83,6 +84,10 @@ public class AddTypeActivity extends  AppCompatActivity{
                 Toast.makeText(getApplicationContext()
                         , "Создан новый тип растения."
                         , Toast.LENGTH_SHORT).show();*/
+
+                Intent intent = new Intent();
+                intent.putExtra(TypeListActivity.EXTRA_ADDED_COLLECTION, createdCollection);
+                setResult(RESULT_OK, intent);
 
                 finish();
             }

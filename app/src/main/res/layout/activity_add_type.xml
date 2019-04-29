@@ -184,7 +184,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:gravity="bottom|right"
-                    android:text="\u003C100\u2103"
+                    android:text="\u003C100%"
                     android:textSize="18sp" />
             </LinearLayout>
 
