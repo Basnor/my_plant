@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.bluetooth.BluetoothSPP;
 import com.example.bluetooth.BluetoothState;
 import com.example.bluetooth.DeviceList;
+import com.example.my_plant.MainActivity;
 import com.example.my_plant.PersistentStorage;
 import com.example.my_plant.R;
 import com.example.my_plant.TypeListActivity;
@@ -127,7 +128,7 @@ public class FragmentAdd extends Fragment {
 
                 // add the profile to database
                 Profile createdProfile = mDBProfile.createProfile(name_profile, mCollection.getId(), address_profile);
-                Log.d(TAG, "added profile : "+ createdProfile.getName());
+                Log.d(TAG, "added profile : " + createdProfile.getName());
 
                 // fill PersistentStorage to get new fields/params of mainFragment
                 PersistentStorage.addLongProperty(PersistentStorage.CURRENT_PROFILE_ID_KEY, createdProfile.getId());
@@ -142,6 +143,9 @@ public class FragmentAdd extends Fragment {
                         , "Создан новый тип растения."
                         , Toast.LENGTH_SHORT).show();*/
 
+
+                //Изменить профиль в навигации
+                ((MainActivity) getActivity()).initNavText();
                 // переключиться на mainFragment
                 FragmentMain fragment = new FragmentMain();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -158,8 +162,8 @@ public class FragmentAdd extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof AppCompatActivity){
-            mActivity =(AppCompatActivity) context;
+        if (context instanceof AppCompatActivity) {
+            mActivity = (AppCompatActivity) context;
         }
     }
 
@@ -169,7 +173,7 @@ public class FragmentAdd extends Fragment {
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
         } else {
-            if(!bt.isServiceAvailable()) {
+            if (!bt.isServiceAvailable()) {
                 bt.setupService();
                 bt.startService(BluetoothState.DEVICE_OTHER);
             }
@@ -196,7 +200,7 @@ public class FragmentAdd extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 try {
                     bt.connect(data);
-                }catch (Exception e) {
+                } catch (Exception e) {
                     Toast.makeText(getActivity().getApplicationContext()
                             , "Connection failed."
                             , Toast.LENGTH_SHORT).show();

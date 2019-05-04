@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.my_plant.ListProfileAdapter;
+import com.example.my_plant.MainActivity;
 import com.example.my_plant.PersistentStorage;
 import com.example.my_plant.R;
 
@@ -97,6 +98,8 @@ public class FragmentProfileList extends Fragment {
                 PersistentStorage.addIntProperty(PersistentStorage.TEMPERATURE_KEY, 0);
                 PersistentStorage.addIntProperty(PersistentStorage.LIGHT_KEY, 0);
 
+                //Изменить профиль в навигации
+                ((MainActivity) getActivity()).initNavText();
                 // переключиться на mainFragment
                 FragmentMain fragment = new FragmentMain();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

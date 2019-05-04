@@ -31,7 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import database.DBCollection;
 import database.DBProfile;
+import model.Collection;
 import model.Profile;
 
 public class FragmentMain extends Fragment {
@@ -39,15 +41,16 @@ public class FragmentMain extends Fragment {
 
     private BluetoothSPP bt;
     private MsgExchange msgExchange;
-    public static String address; // = "98:D3:31:FB:54:46";
+    public static String address;
     int reqNum = -1;
 
-    TextView txtHumidity, txtTemp, txtUpdateTime, txtLight, txtWatering;
+    TextView txtHumidity, txtTemp, txtUpdateTime, txtLight, txtWatering, txtName, txtType;
     private TextView mTxtEmptyListProfile;
     private LinearLayout mLinearLayout;
 
     private Profile mProfile;
     private DBProfile mDBProfile;
+    private DBCollection mDBCollection;
 
     public FragmentMain() {
         // Required empty public constructor
@@ -145,6 +148,8 @@ public class FragmentMain extends Fragment {
         View v = getView();
         assert v != null;
 
+        txtName = v.findViewById(R.id.txt_name);
+        txtType = v.findViewById(R.id.txt_type);
         txtHumidity = v.findViewById(R.id.value_humidity);
         txtTemp = v.findViewById(R.id.value_temperature);
         txtUpdateTime = v.findViewById(R.id.value_last_refresh_time);
@@ -156,6 +161,11 @@ public class FragmentMain extends Fragment {
     }
 
     private void putParamsValue() {
+
+        Profile profile = mDBProfile.getProfileById(PersistentStorage.getLongProperty(PersistentStorage.CURRENT_PROFILE_ID_KEY));
+        txtName.setText(profile.getName());
+        txtType.setText(profile.getCollection().getTypeName());
+
         String formattedStr = getString(R.string.value_humidity,
                 PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY), "%");
         txtHumidity.setText(formattedStr);

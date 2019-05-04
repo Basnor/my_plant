@@ -18,10 +18,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.my_plant.fragments.FragmentAdd;
 import com.example.my_plant.fragments.FragmentMain;
 import com.example.my_plant.fragments.FragmentProfileList;
+
+import database.DBProfile;
+import model.Profile;
 
 
 public class MainActivity extends AppCompatActivity
@@ -32,6 +36,10 @@ public class MainActivity extends AppCompatActivity
     FragmentAdd fragmentAdd;
     FragmentMain fragmentMain;
     FragmentProfileList fragmentProfileList;
+
+    private TextView navName;
+    private TextView navType;
+    private DBProfile mDBProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         PersistentStorage.init(this);
+
+        initNavText();
     }
 
     @Override
@@ -127,6 +137,20 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return super.dispatchTouchEvent(event);
+    }
+
+    public void initNavText() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View navHeaderMain = navigationView.getHeaderView(0);
+        navName = navHeaderMain.findViewById(R.id.nav_name);
+        navType = navHeaderMain.findViewById(R.id.nav_type);
+
+        mDBProfile = new DBProfile(this);
+        Profile profile = mDBProfile.getProfileById(PersistentStorage.getLongProperty(PersistentStorage.CURRENT_PROFILE_ID_KEY));
+        navName.setText(profile.getName());
+        navType.setText(profile.getCollection().getTypeName());
+        mDBProfile.close();
     }
 
     @Override
