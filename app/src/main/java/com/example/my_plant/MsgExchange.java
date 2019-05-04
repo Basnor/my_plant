@@ -67,7 +67,7 @@ public class MsgExchange {
         int maxReqNum = PersistentStorage.getIntProperty(PersistentStorage.MAX_REQ_NUM);
         Log.d("Check", "Max req: " + maxReqNum);
 
-        if (reqNum >= maxReqNum) {
+        /*if (reqNum >= maxReqNum) {
 
             if (mSendStateListener != null)
                 mSendStateListener.setRequest(formMsg(REQ_END));
@@ -80,7 +80,7 @@ public class MsgExchange {
                 mAnswerStateListener.endExchange();
 
             return;
-        }
+        }*/
 
         switch (reqNum) {
             case REQ_INIT: {
@@ -123,6 +123,21 @@ public class MsgExchange {
                 mSendStateListener.increaseReqNum();
 
             }
+        }
+
+        if (reqNum >= maxReqNum) {
+
+            if (mSendStateListener != null)
+                mSendStateListener.setRequest(formMsg(REQ_END));
+
+
+                putInMemory();
+
+
+            if (mAnswerStateListener != null)
+                mAnswerStateListener.endExchange();
+
+            return;
         }
 
         sendGraph();

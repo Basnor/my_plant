@@ -45,12 +45,12 @@ public class FragmentMain extends Fragment {
     int reqNum = -1;
 
     TextView txtHumidity, txtTemp, txtUpdateTime, txtLight, txtWatering, txtName, txtType;
+    LinearLayout lHumidity, lTemperature, lLight;
     private TextView mTxtEmptyListProfile;
     private LinearLayout mLinearLayout;
 
     private Profile mProfile;
     private DBProfile mDBProfile;
-    private DBCollection mDBCollection;
 
     public FragmentMain() {
         // Required empty public constructor
@@ -137,6 +137,7 @@ public class FragmentMain extends Fragment {
 
             @Override
             public void endExchange() {
+                Log.d("Check", "Knew about putParamsValue() ");
                 putParamsValue();
             }
 
@@ -150,13 +151,19 @@ public class FragmentMain extends Fragment {
 
         txtName = v.findViewById(R.id.txt_name);
         txtType = v.findViewById(R.id.txt_type);
+
         txtHumidity = v.findViewById(R.id.value_humidity);
         txtTemp = v.findViewById(R.id.value_temperature);
         txtUpdateTime = v.findViewById(R.id.value_last_refresh_time);
         txtLight = v.findViewById(R.id.value_light);
         txtWatering = v.findViewById(R.id.value_last_water_time);
+
         mTxtEmptyListProfile = v.findViewById(R.id.txt_empty_main);
         mLinearLayout = v.findViewById(R.id.txt_main);
+
+        lHumidity = v.findViewById(R.id.humidity);
+        lTemperature = v.findViewById(R.id.temperature);
+        lLight = v.findViewById(R.id.light);
 
     }
 
@@ -165,6 +172,21 @@ public class FragmentMain extends Fragment {
         Profile profile = mDBProfile.getProfileById(PersistentStorage.getLongProperty(PersistentStorage.CURRENT_PROFILE_ID_KEY));
         txtName.setText(profile.getName());
         txtType.setText(profile.getCollection().getTypeName());
+
+        if (PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY) == 0 ||
+                PersistentStorage.getIntProperty(PersistentStorage.TEMPERATURE_KEY) == 0 ||
+                PersistentStorage.getIntProperty(PersistentStorage.LIGHT_KEY) == 0) {
+            txtHumidity.setText("");
+            txtTemp.setText("");
+            txtLight.setText("");
+            txtUpdateTime.setText("");
+            txtWatering.setText("");
+            lHumidity.setBackgroundResource(R.drawable.boarder_none);
+            lTemperature.setBackgroundResource(R.drawable.boarder_none);
+            lLight.setBackgroundResource(R.drawable.boarder_none);
+
+            return;
+        }
 
         String formattedStr = getString(R.string.value_humidity,
                 PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY), "%");
@@ -186,7 +208,38 @@ public class FragmentMain extends Fragment {
         sdf_pattern = new SimpleDateFormat("dd-MM");
         unixTime = PersistentStorage.getLongProperty(PersistentStorage.WATER_TIME_KEY);
         curTime = new Date(unixTime);
-        txtWatering.setText(sdf_pattern.format(curTime));
+        long zero = new Date(0).getTime();
+        if (unixTime == zero) {
+            txtWatering.setText("");
+        }else txtWatering.setText(sdf_pattern.format(curTime));
+
+
+        int main_humidity = profile.getCollection().getHumidity();
+        int diff = 100 - 100*PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY)/main_humidity;
+        if(diff < 8){
+            lHumidity.setBackgroundResource(R.drawable.boarder_green);
+        } else if (diff < 15) {
+            lHumidity.setBackgroundResource(R.drawable.boarder_yellow);
+        } else lHumidity.setBackgroundResource(R.drawable.boarder_red);
+
+
+        int main_temperature = profile.getCollection().getTemperature();
+        diff = 100 - 100*PersistentStorage.getIntProperty(PersistentStorage.TEMPERATURE_KEY)/main_temperature;
+        if(diff < 8){
+            lTemperature.setBackgroundResource(R.drawable.boarder_green);
+        } else if (diff < 15) {
+            lTemperature.setBackgroundResource(R.drawable.boarder_yellow);
+        } else lTemperature.setBackgroundResource(R.drawable.boarder_red);
+
+
+        int main_light = profile.getCollection().getLight();
+        diff = 100 - 100*PersistentStorage.getIntProperty(PersistentStorage.LIGHT_KEY)/main_light;
+        if(diff < 8){
+            lLight.setBackgroundResource(R.drawable.boarder_green);
+        } else if (diff < 15) {
+            lLight.setBackgroundResource(R.drawable.boarder_yellow);
+        } else lLight.setBackgroundResource(R.drawable.boarder_red);
+        //lLight.setBackgroundResource(R.drawable.boarder_green);
 
     }
 
@@ -209,6 +262,8 @@ public class FragmentMain extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         bt.stopService();
+        mDBProfile.close();
+
     }
 
     @Override
