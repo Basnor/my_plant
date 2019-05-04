@@ -131,6 +131,7 @@ public class MsgExchange {
 
     private void putInMemory() {
         this.mDBParams = new DBParams(context);
+        Date now = new Date();
         long id_profile = PersistentStorage.getLongProperty(PersistentStorage.CURRENT_PROFILE_ID_KEY);
 
         // Нет записей у нового профиля
@@ -141,7 +142,11 @@ public class MsgExchange {
 
         int maxReqNum = PersistentStorage.getIntProperty(PersistentStorage.MAX_REQ_NUM);
         long periodOfRecords = PersistentStorage.getLongProperty(PersistentStorage.PERIOD_OF_RECORDs);
+
         long lastRecTime = mDBParams.getLastDateToProfile(id_profile);
+        if ((now.getTime() - periodOfRecords * 1000 * maxReqNum) > lastRecTime) {
+            lastRecTime = now.getTime() - periodOfRecords * 1000 * maxReqNum;
+        }
 
         SimpleDateFormat sdf_pattern = new SimpleDateFormat("dd-MM HH:mm:ss");
         Log.d("Check", "Last Date To Profile: " + sdf_pattern.format(lastRecTime));
@@ -159,8 +164,6 @@ public class MsgExchange {
                     paramsList.get(i).temperature, paramsList.get(i).light, paramsList.get(i).flgMoist);
 
         }
-
-        Date now = new Date();
 
         // Находим дату последнего полива (примерно т.к. отображение в днях)
         long dateOfLastWater;
