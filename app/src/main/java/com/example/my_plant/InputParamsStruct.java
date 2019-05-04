@@ -12,11 +12,11 @@ class InputParamsStruct {
     int humidity;
     int temperature;
     int light;
-    boolean flgMoist;
+    int flgMoist;
 
     // constructor
     InputParamsStruct(int humidity, int temperature, int light,
-                      boolean flgMoist) {
+                      int flgMoist) {
 
         this.humidity = humidity;
         this.temperature = temperature;

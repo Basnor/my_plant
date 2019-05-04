@@ -39,12 +39,15 @@ public class FragmentMain extends Fragment {
 
     private BluetoothSPP bt;
     private MsgExchange msgExchange;
-    public static String address = "98:D3:31:FB:54:46";
+    public static String address; // = "98:D3:31:FB:54:46";
     int reqNum = -1;
 
     TextView txtHumidity, txtTemp, txtUpdateTime, txtLight, txtWatering;
     private TextView mTxtEmptyListProfile;
     private LinearLayout mLinearLayout;
+
+    private Profile mProfile;
+    private DBProfile mDBProfile;
 
     public FragmentMain() {
         // Required empty public constructor
@@ -69,7 +72,7 @@ public class FragmentMain extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initViews();
 
-        DBProfile mDBProfile = new DBProfile(mActivity);
+        mDBProfile = new DBProfile(mActivity);
         List<Profile> mListProfile = mDBProfile.getAllProfile();
 
         if (mListProfile != null && !mListProfile.isEmpty()) {
@@ -106,7 +109,7 @@ public class FragmentMain extends Fragment {
             }
         });
 
-        msgExchange = new MsgExchange();
+        msgExchange = new MsgExchange(mActivity);
 
         msgExchange.setSendStateListener(new MsgExchange.sendStateListener() {
             @Override
@@ -163,14 +166,18 @@ public class FragmentMain extends Fragment {
                 PersistentStorage.getIntProperty(PersistentStorage.LIGHT_KEY), "%");
         txtLight.setText(formattedStr);
 
+        //время обновления
         SimpleDateFormat sdf_pattern = new SimpleDateFormat("dd-MM HH:mm");
-
-        Long unixTime = PersistentStorage.getLongProperty(PersistentStorage.UPDATE_TIME_KEY);
+        long unixTime = PersistentStorage.getLongProperty(PersistentStorage.UPDATE_TIME_KEY);
         Date curTime = new Date(unixTime);
         txtUpdateTime.setText(sdf_pattern.format(curTime));
 
-        //TODO бд нужна
-        //txtWatering.setText(PersistentStorage.getLongProperty(PersistentStorage.WATER_TIME_KEY));
+        //дата полива
+        sdf_pattern = new SimpleDateFormat("dd-MM");
+        unixTime = PersistentStorage.getLongProperty(PersistentStorage.WATER_TIME_KEY);
+        curTime = new Date(unixTime);
+        txtWatering.setText(sdf_pattern.format(curTime));
+
     }
 
     @Override
@@ -218,6 +225,10 @@ public class FragmentMain extends Fragment {
         super.onResume();
         if (bt.getServiceState() != BluetoothState.STATE_CONNECTED) {
             try {
+                long id_profile = PersistentStorage.getLongProperty(PersistentStorage.CURRENT_PROFILE_ID_KEY);
+                mProfile = mDBProfile.getProfileById(id_profile);
+
+                address = mProfile.getAddress();
                 if (!address.equals(""))
                     bt.connect(address);
             } catch (Exception ignored) {

@@ -48,7 +48,7 @@ public class DBParams {
         mDbHelper.close();
     }
 
-    public Params createParam(long profileId, long date, int humidity, int temperature, int light, boolean flgMoisture) {
+    public Params createParam(long profileId, long date, int humidity, int temperature, int light, int flgMoisture) {
         ContentValues values = new ContentValues();
         values.put(DBHelper.COLUMN_PARAMS_PROFILE, profileId);
         values.put(DBHelper.COLUMN_PARAMS_DATE, date);
@@ -73,24 +73,6 @@ public class DBParams {
         mDatabase.delete(DBHelper.TABLE_PARAMS, DBHelper.COLUMN_PARAMS_ID
                 + " = " + id, null);
     }
-/*
-    public List<Params> getParamsOfCollection(long collectionId) {
-        List<Params> listParams = new ArrayList<Params>();
-
-        Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, mAllColumns,
-                DBHelper.COLUMN_COLLECTION_ID + " = ?",
-                new String[]{String.valueOf(collectionId)}, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Params param = cursorToParam(cursor);
-            listParams.add(param);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
-        return listParams;
-    }*/
 
     public List<Params> getParamsOfProfile(long profileId) {
         List<Params> listParams = new ArrayList<Params>();
@@ -110,7 +92,7 @@ public class DBParams {
         return listParams;
     }
 
-    public Params getCompanyById(long id) {
+    public Params getParamById(long id) {
         Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, mAllColumns,
                 DBHelper.COLUMN_PARAMS_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
@@ -120,6 +102,28 @@ public class DBParams {
 
         Params params = cursorToParam(cursor);
         return params;
+    }
+
+    public long getLastDateToProfile(long profile_id) {
+        Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, new String[]{"MAX(" + DBHelper.COLUMN_PARAMS_DATE + ") AS maxDATE"},
+                DBHelper.COLUMN_PROFILE_ID + " = ?",
+                new String[]{String.valueOf(profile_id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        return cursor.getLong(0);
+    }
+
+    public long getLastWaterDateToProfile(long profile_id) {
+        Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, new String[]{"MAX(" + DBHelper.COLUMN_PARAMS_DATE + ") AS maxDATE"},
+                DBHelper.COLUMN_PROFILE_ID + " = ? AND " + DBHelper.COLUMN_PARAMS_FLG_MOISTURE + " = ?",
+                new String[]{String.valueOf(profile_id), Integer.toString(1)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        return cursor.getLong(0);
     }
 
     protected Params cursorToParam(Cursor cursor) {

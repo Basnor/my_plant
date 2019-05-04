@@ -130,8 +130,7 @@ public class FragmentAdd extends Fragment {
                 Log.d(TAG, "added profile : "+ createdProfile.getName());
 
                 // fill PersistentStorage to get new fields/params of mainFragment
-                PersistentStorage.addStringProperty(PersistentStorage.ADDRESS_KEY, createdProfile.getAddress());
-                PersistentStorage.addStringProperty(PersistentStorage.NAME_KEY, createdProfile.getName());
+                PersistentStorage.addLongProperty(PersistentStorage.CURRENT_PROFILE_ID_KEY, createdProfile.getId());
                 PersistentStorage.addLongProperty(PersistentStorage.UPDATE_TIME_KEY, (long) 0);
                 PersistentStorage.addLongProperty(PersistentStorage.WATER_TIME_KEY, (long) 0);
                 PersistentStorage.addIntProperty(PersistentStorage.HUMIDITY_KEY, 0);
@@ -148,7 +147,6 @@ public class FragmentAdd extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, fragment);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
             }

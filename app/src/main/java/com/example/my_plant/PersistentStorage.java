@@ -6,8 +6,7 @@ import android.content.SharedPreferences;
 public class PersistentStorage {
     public static final String STORAGE_NAME = "CustomValues";
 
-    public static final String ADDRESS_KEY = "btAddress";
-    public static final String NAME_KEY = "namePlant";
+    public static final String CURRENT_PROFILE_ID_KEY = "profileId";
     public static final String HUMIDITY_KEY = "humidity";
     public static final String TEMPERATURE_KEY = "temperature";
     public static final String LIGHT_KEY = "light";
@@ -58,7 +57,7 @@ public class PersistentStorage {
 
     }
 
-    public static String getStrProperty ( String name ){
+    public static String getStringProperty ( String name ){
         if( settings == null ){
             init();
         }

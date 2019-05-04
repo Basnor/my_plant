@@ -86,8 +86,7 @@ public class FragmentProfileList extends Fragment {
                 Log.d(TAG, "clickedItem : " + clickedProfile.getName());
 
                 // fill PersistentStorage to get new fields/params of mainFragment
-                PersistentStorage.addStringProperty(PersistentStorage.ADDRESS_KEY, clickedProfile.getAddress());
-                PersistentStorage.addStringProperty(PersistentStorage.NAME_KEY, clickedProfile.getName());
+                PersistentStorage.addLongProperty(PersistentStorage.CURRENT_PROFILE_ID_KEY, clickedProfile.getId());
 
                 //TODO найти последнюю запись в БД
 
@@ -103,7 +102,6 @@ public class FragmentProfileList extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, fragment);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
             }

@@ -27,7 +27,7 @@
     <string name="value_light">%1$d %2$s</string>
     <string name="value_freq">%1$d дн.</string>
     <string name="last_refresh_time">Время последнего обновления:</string>
-    <string name="last_water_time">Время последнего полива:</string>
+    <string name="last_water_time">Дата последнего полива:</string>
     <string name="refresh_button">Обновить</string>
 
 </resources>
