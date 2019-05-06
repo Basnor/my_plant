@@ -31,9 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import database.DBCollection;
 import database.DBProfile;
-import model.Collection;
 import model.Profile;
 
 public class FragmentMain extends Fragment {
@@ -53,7 +51,6 @@ public class FragmentMain extends Fragment {
     private DBProfile mDBProfile;
 
     public FragmentMain() {
-        // Required empty public constructor
     }
 
     @Override

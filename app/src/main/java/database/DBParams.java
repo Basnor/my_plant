@@ -92,6 +92,24 @@ public class DBParams {
         return listParams;
     }
 
+    public List<Params> getParamsOfProfileForeGraph (long profileId) {
+        List<Params> listParams = new ArrayList<Params>();
+
+        Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, mAllColumns,
+                DBHelper.COLUMN_PROFILE_ID + " = ?",
+                new String[]{String.valueOf(profileId)}, null, null, DBHelper.COLUMN_PARAMS_DATE + " DESC", "100");
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Params param = cursorToParam(cursor);
+            listParams.add(param);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return listParams;
+    }
+
     public Params getParamById(long id) {
         Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, mAllColumns,
                 DBHelper.COLUMN_PARAMS_ID + " = ?",
