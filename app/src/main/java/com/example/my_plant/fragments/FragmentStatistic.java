@@ -17,6 +17,7 @@ import com.example.my_plant.HumidityChartConstruction;
 import com.example.my_plant.LightChartConstruction;
 import com.example.my_plant.R;
 import com.example.my_plant.TemperatureChartConstruction;
+import com.example.my_plant.WaterListHistory;
 
 public class FragmentStatistic extends Fragment {
     protected FragmentActivity mActivity;
@@ -66,7 +67,13 @@ public class FragmentStatistic extends Fragment {
             }
         });
 
-        //TODO WaterList
+        Button btnWaterList = v.findViewById(R.id.btn_water_list);
+        btnWaterList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), WaterListHistory.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

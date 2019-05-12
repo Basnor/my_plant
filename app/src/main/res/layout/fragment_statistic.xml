@@ -14,38 +14,45 @@
             android:id="@+id/btn_humidity_chart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:textSize="18sp"
+            android:background="@drawable/whatever"
+            android:gravity="center"
+            android:layout_margin="10dp"
             android:text="График влажности воздуха"
-
-            android:gravity="start|center_vertical"/>
+            android:textAllCaps="false"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/btn_temperature_chart"
             android:layout_width="match_parent"
-            android:gravity="start|center_vertical"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/whatever"
+            android:text="График температуры"
             android:textAllCaps="false"
-            android:textSize="18sp"
-            android:text="График температуры" />
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/btn_light_chart"
             android:layout_width="match_parent"
-            android:gravity="start|center_vertical"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/whatever"
+            android:text="График освещенности"
             android:textAllCaps="false"
-            android:textSize="18sp"
-            android:text="График освещенности" />
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/btn_water_list"
             android:layout_width="match_parent"
-            android:gravity="start|center_vertical"
-            android:textAllCaps="false"
-            android:textSize="18sp"
             android:layout_height="wrap_content"
-            android:text="История поливов" />
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/whatever"
+            android:text="История поливов"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

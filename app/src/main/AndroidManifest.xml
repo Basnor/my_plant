@@ -41,6 +41,9 @@
         <activity
             android:name="com.example.my_plant.LightChartConstruction"
             android:label="График освещенности" />
+        <activity
+            android:name="com.example.my_plant.WaterListHistory"
+            android:label="История поливов" />
     </application>
 
 </manifest>

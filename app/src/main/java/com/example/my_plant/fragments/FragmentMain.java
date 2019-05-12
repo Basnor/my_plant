@@ -42,7 +42,7 @@ public class FragmentMain extends Fragment {
     public static String address;
     int reqNum = -1;
 
-    TextView txtHumidity, txtTemp, txtUpdateTime, txtLight, txtWatering, txtName, txtType;
+    TextView txtHumidity, txtTemp, txtUpdateTime, txtLight, txtWatering, txtName, txtType, txtNextWater;
     LinearLayout lHumidity, lTemperature, lLight;
     private TextView mTxtEmptyListProfile;
     private LinearLayout mLinearLayout;
@@ -154,6 +154,7 @@ public class FragmentMain extends Fragment {
         txtUpdateTime = v.findViewById(R.id.value_last_refresh_time);
         txtLight = v.findViewById(R.id.value_light);
         txtWatering = v.findViewById(R.id.value_last_water_time);
+        txtNextWater = v.findViewById(R.id.value_next_water);
 
         mTxtEmptyListProfile = v.findViewById(R.id.txt_empty_main);
         mLinearLayout = v.findViewById(R.id.txt_main);
@@ -178,6 +179,7 @@ public class FragmentMain extends Fragment {
             txtLight.setText("");
             txtUpdateTime.setText("");
             txtWatering.setText("");
+            txtNextWater.setText("");
             lHumidity.setBackgroundResource(R.drawable.boarder_none);
             lTemperature.setBackgroundResource(R.drawable.boarder_none);
             lLight.setBackgroundResource(R.drawable.boarder_none);
@@ -208,35 +210,48 @@ public class FragmentMain extends Fragment {
         long zero = new Date(0).getTime();
         if (unixTime == zero) {
             txtWatering.setText("");
-        }else txtWatering.setText(sdf_pattern.format(curTime));
+        } else {
+            txtWatering.setText(sdf_pattern.format(curTime));
+
+
+            long diff = curTime.getTime() - unixTime;
+            long daysInMilli = 1000 * 60 * 60 * 24;
+            long elapsedDays = diff / daysInMilli;
+
+            long nextWater = profile.getCollection().getWaterPeriod() - elapsedDays;
+
+            //через n дней
+            if (nextWater > 0)
+                txtNextWater.setText(String.valueOf(nextWater) + " дн.");
+            else txtNextWater.setText("0 дн.");
+        }
 
 
         int main_humidity = profile.getCollection().getHumidity();
-        int diff = 100 - 100*PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY)/main_humidity;
-        if(diff < 8){
+        int diff = 100 - 100 * PersistentStorage.getIntProperty(PersistentStorage.HUMIDITY_KEY) / main_humidity;
+        if (diff < 2) {
             lHumidity.setBackgroundResource(R.drawable.boarder_green);
-        } else if (diff < 15) {
+        } else if (diff < 5) {
             lHumidity.setBackgroundResource(R.drawable.boarder_yellow);
         } else lHumidity.setBackgroundResource(R.drawable.boarder_red);
 
 
         int main_temperature = profile.getCollection().getTemperature();
-        diff = 100 - 100*PersistentStorage.getIntProperty(PersistentStorage.TEMPERATURE_KEY)/main_temperature;
-        if(diff < 8){
+        diff = 100 - 100 * PersistentStorage.getIntProperty(PersistentStorage.TEMPERATURE_KEY) / main_temperature;
+        if (diff < 2) {
             lTemperature.setBackgroundResource(R.drawable.boarder_green);
-        } else if (diff < 15) {
+        } else if (diff < 5) {
             lTemperature.setBackgroundResource(R.drawable.boarder_yellow);
         } else lTemperature.setBackgroundResource(R.drawable.boarder_red);
 
 
         int main_light = profile.getCollection().getLight();
-        diff = 100 - 100*PersistentStorage.getIntProperty(PersistentStorage.LIGHT_KEY)/main_light;
-        if(diff < 8){
+        diff = 100 - 100 * PersistentStorage.getIntProperty(PersistentStorage.LIGHT_KEY) / main_light;
+        if (diff < 2) {
             lLight.setBackgroundResource(R.drawable.boarder_green);
-        } else if (diff < 15) {
+        } else if (diff < 5) {
             lLight.setBackgroundResource(R.drawable.boarder_yellow);
         } else lLight.setBackgroundResource(R.drawable.boarder_red);
-        //lLight.setBackgroundResource(R.drawable.boarder_green);
 
     }
 

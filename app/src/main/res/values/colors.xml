@@ -9,4 +9,5 @@
     <color name="colorYellow">#66FFEE58</color>
     <color name="colorRed">#66EF5350</color>
     <color name="colorNone">#1211160B</color>
+    <color name="colorBtnIn">#008577</color>
 </resources>

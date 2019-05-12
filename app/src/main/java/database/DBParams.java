@@ -110,6 +110,26 @@ public class DBParams {
         return listParams;
     }
 
+    public List<Long> getWaterDatesToProfile(long profile_id) {
+
+        List<Long> list = new ArrayList<Long>();
+
+        Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, new String[]{DBHelper.COLUMN_PARAMS_DATE },
+                DBHelper.COLUMN_PROFILE_ID + " = ? AND " + DBHelper.COLUMN_PARAMS_FLG_MOISTURE + " = ?",
+                new String[]{String.valueOf(profile_id), Integer.toString(1)}, null, null, null, "30");
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Long date = cursor.getLong(0);
+                list.add(date);
+                cursor.moveToNext();
+            }
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return list;
+    }
+
     public Params getParamById(long id) {
         Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, mAllColumns,
                 DBHelper.COLUMN_PARAMS_ID + " = ?",
