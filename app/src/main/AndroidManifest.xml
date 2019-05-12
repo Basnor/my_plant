@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.my_plant">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -11,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name="com.example.my_plant.MainActivity"
             android:label="@string/app_name"
@@ -25,14 +27,20 @@
 
         <activity
             android:name="com.example.my_plant.AddTypeActivity"
-            android:label="Создание вида">
-
-        </activity>
+            android:label="Создание вида" />
         <activity
             android:name="com.example.my_plant.TypeListActivity"
-            android:label="Виды растений">
+            android:label="Виды растений" />
 
-        </activity>
+        <activity
+            android:name="com.example.my_plant.HumidityChartConstruction"
+            android:label="График влажности воздуха" />
+        <activity
+            android:name="com.example.my_plant.TemperatureChartConstruction"
+            android:label="График температуры" />
+        <activity
+            android:name="com.example.my_plant.LightChartConstruction"
+            android:label="График освещенности" />
     </application>
 
 </manifest>

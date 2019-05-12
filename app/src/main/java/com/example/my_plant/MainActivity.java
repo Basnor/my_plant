@@ -103,11 +103,11 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_main) {
             ftrans.replace(R.id.container, fragmentMain);
         } else if (id == R.id.nav_statistics) {
-
+            ftrans.replace(R.id.container, fragmentStatistic);
         } else if (id == R.id.nav_recommend_params) {
 
         } else if (id == R.id.nav_manage) {
-            ftrans.replace(R.id.container, fragmentStatistic);
+
         } else if (id == R.id.nav_add) {
             ftrans.replace(R.id.container, fragmentAdd);
 

@@ -92,7 +92,7 @@ public class DBParams {
         return listParams;
     }
 
-    public List<Params> getParamsOfProfileForeGraph (long profileId) {
+    public List<Params> getParamsOfProfileChart(long profileId) {
         List<Params> listParams = new ArrayList<Params>();
 
         Cursor cursor = mDatabase.query(DBHelper.TABLE_PARAMS, mAllColumns,
