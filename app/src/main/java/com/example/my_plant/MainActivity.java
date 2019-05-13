@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.my_plant.fragments.FragmentAdd;
 import com.example.my_plant.fragments.FragmentMain;
 import com.example.my_plant.fragments.FragmentProfileList;
+import com.example.my_plant.fragments.FragmentSettings;
 import com.example.my_plant.fragments.FragmentStatistic;
 
 import database.DBProfile;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     FragmentMain fragmentMain;
     FragmentProfileList fragmentProfileList;
     FragmentStatistic fragmentStatistic;
+    FragmentSettings fragmentSettings;
 
     private TextView navName;
     private TextView navType;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity
         fragmentMain = new FragmentMain();
         fragmentProfileList = new FragmentProfileList();
         fragmentStatistic = new FragmentStatistic();
+        fragmentSettings = new FragmentSettings();
 
         // Set Homepage Fragment
         if (savedInstanceState == null) {
@@ -104,13 +107,10 @@ public class MainActivity extends AppCompatActivity
             ftrans.replace(R.id.container, fragmentMain);
         } else if (id == R.id.nav_statistics) {
             ftrans.replace(R.id.container, fragmentStatistic);
-        } else if (id == R.id.nav_recommend_params) {
-
         } else if (id == R.id.nav_manage) {
-
+            ftrans.replace(R.id.container, fragmentSettings);
         } else if (id == R.id.nav_add) {
             ftrans.replace(R.id.container, fragmentAdd);
-
         } else if (id == R.id.nav_choose) {
             ftrans.replace(R.id.container, fragmentProfileList);
         }

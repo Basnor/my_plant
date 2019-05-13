@@ -44,6 +44,13 @@
         <activity
             android:name="com.example.my_plant.WaterListHistory"
             android:label="История поливов" />
+
+        <activity
+            android:name="com.example.my_plant.DeleteTypeActivity"
+            android:label="Удалить тип растения" />
+        <activity
+            android:name="com.example.my_plant.DeleteProfileActivity"
+            android:label="Удалить профиль растения" />
     </application>
 
 </manifest>
